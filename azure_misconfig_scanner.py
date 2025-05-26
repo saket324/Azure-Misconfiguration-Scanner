@@ -23,7 +23,7 @@ def log(msg):
     report.append(msg)
 
 #1. Check for public Blob containers 
-log("\n🔍 Scanning for public Blob containers...")
+log("\n Scanning for public Blob containers...")
 for account in storage_client.storage_accounts.list():
     account_name = account.name
     resource_group = account.id.split("/")[4]
@@ -34,7 +34,7 @@ for account in storage_client.storage_accounts.list():
         log(f" Skipped {account_name}: {e}")
 
 #2. Check for NSGs with open inbound ports 
-log("\n🔍 Scanning NSGs for open inbound ports...")
+log("\n Scanning NSGs for open inbound ports...")
 for nsg in network_client.network_security_groups.list_all():
     nsg_name = nsg.name
     rg_name = nsg.id.split("/")[4]
@@ -45,7 +45,7 @@ for nsg in network_client.network_security_groups.list_all():
                 log(f" NSG '{nsg_name}' in RG '{rg_name}' allows inbound access from ANY to port range {rule.destination_port_range or rule.destination_port_ranges} ({rule.name})")
 
 # 3. Check for missing diagnostic settings on NSGs
-log("\n🔍 Scanning NSGs for missing diagnostic logging...")
+log("\n Scanning NSGs for missing diagnostic logging...")
 for nsg in network_client.network_security_groups.list_all():
     nsg_id = nsg.id
     nsg_name = nsg.name
@@ -58,7 +58,7 @@ for nsg in network_client.network_security_groups.list_all():
         log(f" Could not retrieve diagnostic settings for NSG '{nsg_name}': {e}")
 
 # 4. Check for unattached public IPs
-log("\n🔍 Scanning for unattached public IP addresses...")
+log("\n Scanning for unattached public IP addresses...")
 for ip in network_client.public_ip_addresses.list_all():
     ip_name = ip.name
     rg_name = ip.id.split("/")[4]
@@ -67,7 +67,7 @@ for ip in network_client.public_ip_addresses.list_all():
         log(f" Public IP '{ip_name}' in RG '{rg_name}' is not associated with any resource.")
 
 # 5. Check storage accounts for open firewall access
-log("\n🔍 Scanning storage accounts for open firewall rules...")
+log("\n Scanning storage accounts for open firewall rules...")
 for account in storage_client.storage_accounts.list():
     account_name = account.name
     rg_name = account.id.split("/")[4]
